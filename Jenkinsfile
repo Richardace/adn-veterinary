@@ -13,6 +13,7 @@ pipeline {
   //Una sección que define las herramientas “preinstaladas” en Jenkins
   tools {
     jdk 'JDK11_Centos' //Verisión preinstalada en la Configuración del Master
+    gradle 'Gradle6.0.1_Centos'
   }
 /*	Versiones disponibles
       JDK8_Mac
@@ -48,8 +49,10 @@ pipeline {
     stage('Compile & Unit Tests') {
       steps{
         echo "------------>Compile & Unit Tests<------------"
-            sh 'chmod +x ./veterinary/gradle'
-			sh './veterinary/gradle --b ./veterinary/build.gradle test'
+        dir("veterinary") {
+            sh 'gradle --b ./build.gradle clean'
+            sh 'gradle --b ./build.gradle jacocoTestReport'
+        }
       }
     }
 
