@@ -48,8 +48,8 @@ pipeline {
     stage('Compile & Unit Tests') {
       steps{
         echo "------------>Compile & Unit Tests<------------"
-            sh 'chmod +x ./veterinary/gradlew'
-			sh './veterinary/gradlew --b ./veterinary/build.gradle test'
+            sh 'chmod +x ./veterinary/gradle'
+			sh './veterinary/gradle --b ./veterinary/build.gradle test'
       }
     }
 
