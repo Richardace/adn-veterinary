@@ -49,10 +49,8 @@ pipeline {
     stage('Compile & Unit Tests') {
       steps{
         echo "------------>Compile & Unit Tests<------------"
-        dir("veterinary") {
-            sh 'gradle --b ./build.gradle clean'
-            sh 'gradle --b ./build.gradle jacocoTestReport'
-        }
+        sh 'chmod +x ./veterinary/gradlew'
+        sh './veterinary/gradlew --b ./veterinary/build.gradle test'
       }
     }
 
