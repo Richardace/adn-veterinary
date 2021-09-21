@@ -12,7 +12,7 @@ pipeline {
 
   //Una sección que define las herramientas “preinstaladas” en Jenkins
   tools {
-    jdk 'JDK8_Centos' //Verisión preinstalada en la Configuración del Master
+    jdk 'JDK11_Centos' //Verisión preinstalada en la Configuración del Master
   }
 /*	Versiones disponibles
       JDK8_Mac
@@ -30,13 +30,26 @@ pipeline {
     stage('Checkout') {
       steps{
         echo "------------>Checkout<------------"
+        checkout([
+            $class: 'GitSCM',
+            branches: [[name: '*/main']],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [],
+            gitTool: 'Default',
+            submoduleCfg: [],
+            userRemoteConfigs: [[
+				credentialsId: 'GitHub_Richardace',
+				url:'https://github.com/Richardace/adn-veterinary.git'
+            ]]
+        ])
       }
     }
 
     stage('Compile & Unit Tests') {
       steps{
         echo "------------>Compile & Unit Tests<------------"
-
+            sh 'chmod +x ./veterinary/gradlew'
+			sh './veterinary/gradlew --b ./veterinary/build.gradle test'
       }
     }
 
