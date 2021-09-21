@@ -46,11 +46,21 @@ pipeline {
       }
     }
 
+    stage('Clean') {
+      steps{
+        echo "------------>Clean<------------"
+        sh 'chmod +x ./veterinary/gradlew'
+        sh './veterinary/gradlew --b ./veterinary/build.gradle clean'
+      }
+    }
+
     stage('Compile & Unit Tests') {
       steps{
         echo "------------>Compile & Unit Tests<------------"
         sh 'chmod +x ./veterinary/gradlew'
+        sh './veterinary/gradlew --b ./veterinary/build.gradle clean'
         sh './veterinary/gradlew --b ./veterinary/build.gradle test'
+        sh './veterinary/gradlew --b ./veterinary/build.gradle jacocoTestReport'
       }
     }
 
@@ -66,6 +76,9 @@ sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallat
     stage('Build') {
       steps {
         echo "------------>Build<------------"
+        sh 'chmod +x ./veterinary/gradlew'
+        sh './veterinary/gradlew --b ./veterinary/build.gradle clean'
+        sh './veterinary/gradlew --b ./veterinary/build.gradle build'
       }
     }
   }
@@ -76,9 +89,11 @@ sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallat
     }
     success {
       echo 'This will run only if successful'
+      mail (to: 'richard.acevedo@ceiba.com.co',subject: "Success Pipeline:${currentBuild.fullDisplayName}",body: "Something is wrong with ${env.BUILD_URL}")
     }
     failure {
       echo 'This will run only if failed'
+      mail (to: 'richard.acevedo@ceiba.com.co',subject: "Failed Pipeline:${currentBuild.fullDisplayName}",body: "Something is wrong with ${env.BUILD_URL}")
     }
     unstable {
       echo 'This will run only if the run was marked as unstable'
