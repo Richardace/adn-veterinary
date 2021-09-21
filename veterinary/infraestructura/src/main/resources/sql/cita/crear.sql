@@ -1,0 +1,1 @@
+insert into cita (idUsuario, fecha, notas) values (:idUsuario, :fecha, :notas)

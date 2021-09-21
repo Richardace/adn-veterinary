@@ -1,0 +1,1 @@
+insert into usuario(nombre,clave,rol) values('test','1234','admin')
