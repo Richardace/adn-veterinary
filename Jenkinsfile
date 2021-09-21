@@ -1,76 +1,57 @@
 pipeline {
-
+  //Donde se va a ejecutar el Pipeline
   agent {
     label 'Slave_Induccion'
   }
 
+  //Opciones específicas de Pipeline dentro del Pipeline
   options {
-    buildDiscarder(logRotator(numToKeepStr: '3'))
- 	 disableConcurrentBuilds()
+    	buildDiscarder(logRotator(numToKeepStr: '3'))
+ 	disableConcurrentBuilds()
   }
 
+  //Una sección que define las herramientas “preinstaladas” en Jenkins
   tools {
-    jdk 'JDK8_Centos'
-    gradle 'Gradle6.0.1_Centos'
+    jdk 'JDK8_Centos' //Verisión preinstalada en la Configuración del Master
   }
+/*	Versiones disponibles
+      JDK8_Mac
+      JDK6_Centos
+      JDK7_Centos
+      JDK8_Centos
+      JDK10_Centos
+      JDK11_Centos
+      JDK13_Centos
+      JDK14_Centos
+*/
 
+  //Aquí comienzan los “items” del Pipeline
   stages{
     stage('Checkout') {
       steps{
         echo "------------>Checkout<------------"
-        checkout([
-			$class: 'GitSCM',
-			branches: [[name: '*/main']],
-			doGenerateSubmoduleConfigurations: false,
-			extensions: [],
-			gitTool: 'Default',
-			submoduleCfg: [],
-			userRemoteConfigs: [[
-				credentialsId: 'GitHub_Richardace',
-				url:'https://github.com/Richardace/adn-veterinary'
-			]]
-		])
       }
     }
 
-    stage('Clean') {
+    stage('Compile & Unit Tests') {
       steps{
-        echo "------------>Clean<------------"
-	dir("veterinary") {
-            sh 'gradle --b ./build.gradle clean'
-	}
-      }
-    }
+        echo "------------>Compile & Unit Tests<------------"
 
-    stage('Unit Tests') {
-      steps{
-        echo "------------>Unit Tests<------------"
-	dir("veterinary") {
-            sh 'gradle --b ./build.gradle clean'
-            sh 'gradle --b ./build.gradle jacocoTestReport'
-	}
       }
     }
 
     stage('Static Code Analysis') {
       steps{
-          echo '------------>Análisis de código estático<------------'
-
-		withSonarQubeEnv('Sonar') {
-                  sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
-                }
-
-
-       }
+        echo '------------>Análisis de código estático<------------'
+        withSonarQubeEnv('Sonar') {
+sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
+        }
+      }
     }
 
     stage('Build') {
       steps {
         echo "------------>Build<------------"
-	dir("veterinary") {
-	    sh 'gradle --b ./build.gradle build -x test'
-	}
-
       }
     }
   }
@@ -84,6 +65,13 @@ pipeline {
     }
     failure {
       echo 'This will run only if failed'
+    }
+    unstable {
+      echo 'This will run only if the run was marked as unstable'
+    }
+    changed {
+      echo 'This will run only if the state of the Pipeline has changed'
+      echo 'For example, if the Pipeline was previously failing but is now successful'
     }
   }
 }
