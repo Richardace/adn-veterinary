@@ -9,11 +9,13 @@ public class ComandoUsuarioTestDataBuilder {
 
     private Long id;
     private String nombre;
+    private String correo;
     private String clave;
     private String rol;
 
     public ComandoUsuarioTestDataBuilder() {
         nombre = UUID.randomUUID().toString();
+        correo = "richard.acevedo98@gmail.com";
         clave = "1234";
         rol = "admin";
     }
@@ -24,6 +26,6 @@ public class ComandoUsuarioTestDataBuilder {
     }
 
     public ComandoUsuario build() {
-        return new ComandoUsuario(id,nombre, clave, rol);
+        return new ComandoUsuario(id,nombre, correo, clave, rol);
     }
 }

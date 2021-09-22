@@ -1,0 +1,1 @@
+select * from usuario where correo = :correo and clave = :clave

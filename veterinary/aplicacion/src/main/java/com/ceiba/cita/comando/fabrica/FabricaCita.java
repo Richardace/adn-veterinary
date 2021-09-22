@@ -4,8 +4,6 @@ import com.ceiba.cita.comando.ComandoCita;
 import com.ceiba.cita.modelo.entidad.Cita;
 import org.springframework.stereotype.Component;
 
-import com.ceiba.usuario.comando.ComandoUsuario;
-
 @Component
 public class FabricaCita {
 
@@ -14,6 +12,7 @@ public class FabricaCita {
                 comandoCita.getId(),
                 comandoCita.getIdUsuario(),
                 comandoCita.getFecha(),
+                comandoCita.getHora(),
                 comandoCita.getNotas()
         );
     }

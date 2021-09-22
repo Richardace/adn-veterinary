@@ -15,9 +15,11 @@ public class MapeoCita implements RowMapper<DtoCita>, MapperResult {
         Long id = resultSet.getLong("id");
         Long idUsuario = resultSet.getLong("idUsuario");
         String fecha = resultSet.getString("fecha");
+        Integer hora = resultSet.getInt("hora");
+        Double precio = resultSet.getDouble("precio");
         String notas = resultSet.getString("notas");
 
-        return new DtoCita(id,idUsuario,fecha,notas);
+        return new DtoCita(id,idUsuario,fecha, hora, precio, notas);
     }
 
 }

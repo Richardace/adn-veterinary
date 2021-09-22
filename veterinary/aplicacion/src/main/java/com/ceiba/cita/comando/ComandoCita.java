@@ -14,5 +14,6 @@ public class ComandoCita{
     private Long id;
     private Long idUsuario;
     private String fecha;
+    private Integer hora;
     private String notas;
 }

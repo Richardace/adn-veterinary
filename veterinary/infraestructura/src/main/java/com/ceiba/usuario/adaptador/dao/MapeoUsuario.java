@@ -15,10 +15,11 @@ public class MapeoUsuario implements RowMapper<DtoUsuario>, MapperResult {
 
         Long id = resultSet.getLong("id");
         String nombre = resultSet.getString("nombre");
+        String correo = resultSet.getString("correo");
         String clave = resultSet.getString("clave");
         String rol = resultSet.getString("rol");
 
-        return new DtoUsuario(id,nombre,clave,rol);
+        return new DtoUsuario(id, nombre, correo, clave, rol);
     }
 
 }

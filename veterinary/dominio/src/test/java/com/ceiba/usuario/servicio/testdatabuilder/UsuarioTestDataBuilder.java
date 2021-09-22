@@ -7,12 +7,14 @@ import java.time.LocalDateTime;
 public class UsuarioTestDataBuilder {
 
     private Long id;
-    private String nombreUsuario;
+    private String nombre;
+    private String correo;
     private String clave;
     private String rol;
 
     public UsuarioTestDataBuilder() {
-        nombreUsuario = "1234";
+        nombre = "1234";
+        correo = "richardacevedo98@gmail.com";
         clave = "1234";
         rol = "admin";
     }
@@ -28,6 +30,6 @@ public class UsuarioTestDataBuilder {
     }
 
     public Usuario build() {
-        return new Usuario(id,nombreUsuario, clave,rol);
+        return new Usuario(id,nombre, correo, clave,rol);
     }
 }

@@ -12,8 +12,16 @@ public class FabricaUsuario {
         return new Usuario(
                 comandoUsuario.getId(),
                 comandoUsuario.getNombre(),
+                comandoUsuario.getCorreo(),
                 comandoUsuario.getClave(),
                 comandoUsuario.getRol()
+        );
+    }
+
+    public Usuario autenticar(ComandoUsuario comandoUsuario){
+        return new Usuario(
+          comandoUsuario.getCorreo(),
+          comandoUsuario.getClave()
         );
     }
 

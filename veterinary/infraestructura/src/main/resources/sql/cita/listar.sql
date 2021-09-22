@@ -1,2 +1,2 @@
-select id,idUsuario,fecha,notas
+select *
 from cita

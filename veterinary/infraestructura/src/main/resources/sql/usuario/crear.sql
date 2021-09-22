@@ -1,1 +1,1 @@
-insert into usuario (nombre, clave,rol) values (:nombre, :clave, :rol)
+insert into usuario (nombre, correo, clave,rol) values (:nombre, :correo, :clave, :rol)

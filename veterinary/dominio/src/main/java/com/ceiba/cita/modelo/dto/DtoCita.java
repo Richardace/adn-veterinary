@@ -9,6 +9,8 @@ public class DtoCita {
     private Long id;
     private Long idUsuario;
     private String fecha;
+    private Integer hora;
+    private Double precio;
     private String notas;
 
 }

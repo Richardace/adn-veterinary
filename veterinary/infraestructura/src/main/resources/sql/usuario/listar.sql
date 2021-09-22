@@ -1,2 +1,2 @@
-select id,nombre,clave,rol
+select id,nombre, correo, clave,rol
 from usuario

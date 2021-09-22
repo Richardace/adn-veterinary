@@ -11,4 +11,8 @@ public interface DaoCita {
      * @return las citas
      */
     List<DtoCita> listar();
+
+    Boolean findCitaByFechaAndHora(String fecha, int hora);
+
+    boolean findCitasByFechaAndUsuario(String fecha, Long idUsuario);
 }
