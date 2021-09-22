@@ -1,6 +1,5 @@
 package com.ceiba.usuario.adaptador.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.ceiba.infraestructura.excepcion.ExcepcionTecnica;
@@ -42,15 +41,11 @@ public class DaoUsuarioMysql implements DaoUsuario {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("correo", usuario.getNombre());
         paramSource.addValue("clave", usuario.getClave());
-        DtoUsuario dto = null;
         try {
-            dto = this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlAutenticar, paramSource, new MapeoUsuario());
+            return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlAutenticar, paramSource, new MapeoUsuario());
         } catch (EmptyResultDataAccessException e) {
             throw new ExcepcionTecnica(AUTENTICACION_FALLIDA);
         }
-
-        return dto;
-
     }
 
 }

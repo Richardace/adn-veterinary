@@ -7,8 +7,6 @@ import com.ceiba.usuario.modelo.entidad.Usuario;
 import com.ceiba.usuario.puerto.dao.DaoUsuario;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class ManejadorAutenticarUsuario {
 

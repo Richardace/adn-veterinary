@@ -2,9 +2,9 @@ package com.ceiba.cita.adaptador.dao;
 
 import com.ceiba.cita.modelo.dto.DtoCita;
 import com.ceiba.cita.puerto.dao.DaoCita;
+import com.ceiba.infraestructura.excepcion.ExcepcionTecnica;
 import com.ceiba.infraestructura.jdbc.CustomNamedParameterJdbcTemplate;
 import com.ceiba.infraestructura.jdbc.sqlstatement.SqlStatement;
-import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
@@ -46,8 +46,14 @@ public class DaoCitaMysql implements DaoCita {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("fecha", fecha);
         paramSource.addValue("idUsuario", idUsuario);
-        Integer cantidadCitas = this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlCitasUsuario,paramSource, Integer.class);
-        return cantidadCitas > 2 ? true : false;
+        try{
+            Integer cantidadCitas = this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlCitasUsuario,paramSource, Integer.class);
+            return cantidadCitas > 2 ? true : false;
+        }catch (NullPointerException e){
+            throw new ExcepcionTecnica("ALGO FALLO");
+        }
+
+
     }
 
 }

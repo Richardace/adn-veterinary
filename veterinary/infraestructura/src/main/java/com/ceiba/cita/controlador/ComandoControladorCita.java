@@ -4,7 +4,6 @@ import com.ceiba.ComandoRespuesta;
 import com.ceiba.cita.comando.ComandoCita;
 import com.ceiba.cita.comando.manejador.ManejadorActualizarCita;
 import com.ceiba.cita.comando.manejador.ManejadorCrearCita;
-import com.ceiba.usuario.comando.ComandoUsuario;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
