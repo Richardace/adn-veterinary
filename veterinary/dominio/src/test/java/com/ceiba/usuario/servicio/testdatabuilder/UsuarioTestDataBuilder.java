@@ -29,6 +29,26 @@ public class UsuarioTestDataBuilder {
         return this;
     }
 
+    public UsuarioTestDataBuilder sinNombre(){
+        this.nombre = null;
+        return this;
+    }
+
+    public UsuarioTestDataBuilder sinClave(){
+        this.clave = null;
+        return this;
+    }
+
+    public UsuarioTestDataBuilder sinCorreo(){
+        this.correo = null;
+        return this;
+    }
+    public UsuarioTestDataBuilder sinRol(){
+        this.rol = null;
+        return this;
+    }
+
+
     public Usuario build() {
         return new Usuario(id,nombre, correo, clave,rol);
     }

@@ -24,6 +24,7 @@ public class Usuario {
     private String rol;
 
     public Usuario(Long id,String nombre, String correo, String clave,String rol) {
+        validarObligatorio(nombre, SE_DEBE_INGRESAR_EL_NOMBRE_DE_USUARIO);
         validarObligatorio(clave, SE_DEBE_INGRESAR_LA_CLAVE);
         validarObligatorio(correo, SE_DEBE_INGRESAR_EL_CORREO_DE_USUARIO);
         validarLongitud(clave, LONGITUD_MINIMA_CLAVE, String.format(LA_CLAVE_DEBE_TENER_UNA_LONGITUD_MAYOR_O_IGUAL_A,LONGITUD_MINIMA_CLAVE));

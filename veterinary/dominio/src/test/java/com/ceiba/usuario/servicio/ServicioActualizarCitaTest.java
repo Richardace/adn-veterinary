@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 
 import com.ceiba.BasePrueba;
 
-public class ServicioActualizarUsuarioTest {
+public class ServicioActualizarCitaTest {
 
     @Test
     public void validarUsuarioExistenciaPreviaTest() {

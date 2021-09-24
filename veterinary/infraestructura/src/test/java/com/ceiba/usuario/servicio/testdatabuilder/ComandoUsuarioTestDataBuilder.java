@@ -15,7 +15,7 @@ public class ComandoUsuarioTestDataBuilder {
 
     public ComandoUsuarioTestDataBuilder() {
         nombre = UUID.randomUUID().toString();
-        correo = "richard.acevedo98@gmail.com";
+        correo = "richard@gmail.com";
         clave = "1234";
         rol = "admin";
     }

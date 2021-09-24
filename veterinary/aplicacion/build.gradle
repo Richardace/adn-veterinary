@@ -14,7 +14,7 @@ dependencies {
 	implementation project(':dominio')
 	implementation project(':comun:comun-aplicacion')
 	implementation project.ext.springtxt
-
+	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
 	compileOnly project.ext.lombok
 	annotationProcessor project.ext.lombok
 }

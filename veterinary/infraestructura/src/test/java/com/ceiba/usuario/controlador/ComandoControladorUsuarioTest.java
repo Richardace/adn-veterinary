@@ -31,9 +31,10 @@ public class ComandoControladorUsuarioTest {
     private MockMvc mocMvc;
 
     @Test
-    public void crear() throws Exception{
+    public void crearUsuarioExitosoTest() throws Exception{
         // arrange
         ComandoUsuario usuario = new ComandoUsuarioTestDataBuilder().build();
+        usuario.setCorreo("prueba@gmail.com");
 
         // act - assert
         mocMvc.perform(post("/usuarios")
@@ -44,10 +45,24 @@ public class ComandoControladorUsuarioTest {
     }
 
     @Test
-    public void actualizar() throws Exception{
+    public void crearUsuarioFallidoTest() throws Exception{
+        // arrange
+        ComandoUsuario usuario = new ComandoUsuarioTestDataBuilder().build();
+
+        // act - assert
+        mocMvc.perform(post("/usuarios")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(usuario)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("{'nombreExcepcion': 'ExcepcionDuplicidad'}"));
+    }
+
+    @Test
+    public void actualizarUsuarioExitosoTest() throws Exception{
         // arrange
         Long id = 2L;
         ComandoUsuario usuario = new ComandoUsuarioTestDataBuilder().build();
+        usuario.setCorreo("ceiba@gmail.com");
 
         // act - assert
         mocMvc.perform(put("/usuarios/{id}",id)
@@ -57,14 +72,16 @@ public class ComandoControladorUsuarioTest {
     }
 
     @Test
-    public void eliminar() throws Exception {
+    public void actualizarUsuarioFallidoTest() throws Exception{
         // arrange
         Long id = 2L;
+        ComandoUsuario usuario = new ComandoUsuarioTestDataBuilder().build();
 
         // act - assert
-        mocMvc.perform(delete("/usuarios/{id}",id)
+        mocMvc.perform(put("/usuarios/{id}",id)
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .content(objectMapper.writeValueAsString(usuario)))
+                .andExpect(status().isBadRequest());
     }
+
 }

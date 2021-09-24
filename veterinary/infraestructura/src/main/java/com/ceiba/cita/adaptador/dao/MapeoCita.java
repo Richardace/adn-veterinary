@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class MapeoCita implements RowMapper<DtoCita>, MapperResult {
 
@@ -14,7 +15,7 @@ public class MapeoCita implements RowMapper<DtoCita>, MapperResult {
 
         Long id = resultSet.getLong("id");
         Long idUsuario = resultSet.getLong("idUsuario");
-        String fecha = resultSet.getString("fecha");
+        LocalDateTime fecha = extraerLocalDateTime(resultSet, "fecha");
         Integer hora = resultSet.getInt("hora");
         Double precio = resultSet.getDouble("precio");
         String notas = resultSet.getString("notas");

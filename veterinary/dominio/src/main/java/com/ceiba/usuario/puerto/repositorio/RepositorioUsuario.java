@@ -17,23 +17,17 @@ public interface RepositorioUsuario {
     void actualizar(Usuario usuario);
 
     /**
-     * Permite eliminar un usuario
-     * @param id
-     */
-    void eliminar(Long id);
-
-    /**
      * Permite validar si existe un usuario con un nombre
-     * @param nombre
+     * @param correo
      * @return si existe o no
      */
-    boolean existe(String nombre);
+    boolean existe(String correo);
 
     /**
      * Permite validar si existe un usuario con un nombre excluyendo un id
-     * @param nombre
+     * @param correo
      * @return si existe o no
      */
-    boolean existeExcluyendoId(Long id,String nombre);
+    boolean existeExcluyendoId(Long id,String correo);
 
 }

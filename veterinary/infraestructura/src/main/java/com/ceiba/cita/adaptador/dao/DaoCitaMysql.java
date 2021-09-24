@@ -8,6 +8,7 @@ import com.ceiba.infraestructura.jdbc.sqlstatement.SqlStatement;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -34,7 +35,7 @@ public class DaoCitaMysql implements DaoCita {
     }
 
     @Override
-    public Boolean findCitaByFechaAndHora(String fecha, int hora) {
+    public Boolean findCitaByFechaAndHora(LocalDate fecha, int hora) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("fecha", fecha);
         paramSource.addValue("hora", hora);
@@ -42,13 +43,13 @@ public class DaoCitaMysql implements DaoCita {
     }
 
     @Override
-    public boolean findCitasByFechaAndUsuario(String fecha, Long idUsuario) {
+    public boolean findCitasByFechaAndUsuario(LocalDate fecha, Long idUsuario) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("fecha", fecha);
         paramSource.addValue("idUsuario", idUsuario);
         try{
             Integer cantidadCitas = this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlCitasUsuario,paramSource, Integer.class);
-            return cantidadCitas > 2 ? true : false;
+            return cantidadCitas > 2;
         }catch (NullPointerException e){
             throw new ExcepcionTecnica("ALGO FALLO");
         }
