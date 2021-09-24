@@ -9,7 +9,6 @@ public class FabricaCita {
 
     public Cita crear(ComandoCita comandoCita) {
         return new Cita(
-                comandoCita.getId(),
                 comandoCita.getIdUsuario(),
                 comandoCita.getFecha(),
                 comandoCita.getHora(),

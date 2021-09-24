@@ -23,35 +23,6 @@ public class Cita {
     private Double precio;
     private String notas;
 
-    public Cita(Long id, Long idUsuario, LocalDateTime fecha, Integer hora, String notas) {
-
-        validarObligatorio(idUsuario, SE_DEBE_INGRESAR_EL_USUARIO);
-        validarObligatorio(fecha, SE_DEBE_INGRESAR_LA_FECHA);
-        validarObligatorio(hora, SE_DEBE_INGRESAR_HORA);
-        validarObligatorio(notas, NOTAS_VACIO);
-
-        this.id = id;
-        this.idUsuario = idUsuario;
-        this.fecha = fecha;
-        this.hora = hora;
-        this.notas = notas;
-    }
-
-    public Cita(Long id, Long idUsuario, LocalDateTime fecha, Integer hora, Double precio, String notas) {
-
-        validarObligatorio(idUsuario, SE_DEBE_INGRESAR_EL_USUARIO);
-        validarObligatorio(fecha, SE_DEBE_INGRESAR_LA_FECHA);
-        validarObligatorio(hora, SE_DEBE_INGRESAR_HORA);
-        validarObligatorio(notas, NOTAS_VACIO);
-
-        this.id = id;
-        this.idUsuario = idUsuario;
-        this.fecha = fecha;
-        this.hora = hora;
-        this.precio = precio;
-        this.notas = notas;
-    }
-
     public Cita(Long idUsuario, LocalDateTime fecha, Integer hora, String notas) {
 
         validarObligatorio(idUsuario, SE_DEBE_INGRESAR_EL_USUARIO);
