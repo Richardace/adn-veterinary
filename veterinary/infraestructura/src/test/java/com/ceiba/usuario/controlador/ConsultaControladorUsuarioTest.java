@@ -1,6 +1,7 @@
 package com.ceiba.usuario.controlador;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.ceiba.ApplicationMock;
@@ -48,7 +49,7 @@ public class ConsultaControladorUsuarioTest {
         usuario.setCorreo("richard@gmail.com");
         usuario.setClave("1234");
 
-        mocMvc.perform(get("/usuarios/autenticar")
+        mocMvc.perform(post("/usuarios/autenticar")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(usuario)))
                         .andExpect(status().isOk())
@@ -63,7 +64,7 @@ public class ConsultaControladorUsuarioTest {
         usuario.setCorreo("richard@gmail.com");
         usuario.setClave("1235");
 
-        mocMvc.perform(get("/usuarios/autenticar")
+        mocMvc.perform(post("/usuarios/autenticar")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(usuario)))
                 .andExpect(status().isInternalServerError())
