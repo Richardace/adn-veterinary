@@ -37,10 +37,11 @@ public class ServicioActualizarCitaTest {
 
     @Test
     public void validarPrecioCitaFinDeSemanaTest() {
-        // arrange
+
         LocalDateTime fechaCitaPrueba = LocalDateTime.of(2021, Month.SEPTEMBER, 25, 00, 00, 00);
-        // act - assert
+
         Double precioCita = CitaUtil.calcularCostoCita(fechaCitaPrueba.toLocalDate());
+
         Assert.assertEquals(VALOR_CITA_FIN_DE_SEMANA, precioCita);
     }
 

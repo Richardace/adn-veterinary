@@ -5,6 +5,7 @@ import com.ceiba.cita.puerto.dao.DaoCita;
 import com.ceiba.infraestructura.excepcion.ExcepcionTecnica;
 import com.ceiba.infraestructura.jdbc.CustomNamedParameterJdbcTemplate;
 import com.ceiba.infraestructura.jdbc.sqlstatement.SqlStatement;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,8 @@ import java.util.List;
 
 @Component
 public class DaoCitaMysql implements DaoCita {
+
+    private final static String CONSULTA_FALLIDA = "No se encontró usuario con las credenciales proporcionadas";
 
     private final CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate;
 
@@ -50,8 +53,8 @@ public class DaoCitaMysql implements DaoCita {
         try{
             Integer cantidadCitas = this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlCitasUsuario,paramSource, Integer.class);
             return cantidadCitas > 2;
-        }catch (NullPointerException e){
-            throw new ExcepcionTecnica("ALGO FALLO");
+        }catch (EmptyResultDataAccessException e){
+            throw new ExcepcionTecnica(CONSULTA_FALLIDA);
         }
 
 

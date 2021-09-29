@@ -26,10 +26,7 @@ public class CitaUtil {
     }
 
     public static boolean esFinDeSemana(LocalDate fecha){
-        if ((fecha.getDayOfWeek() == DayOfWeek.SATURDAY || fecha.getDayOfWeek() == DayOfWeek.SUNDAY)) {
-            return true;
-        }
-        return false;
+         return (fecha.getDayOfWeek() == DayOfWeek.SATURDAY || fecha.getDayOfWeek() == DayOfWeek.SUNDAY);
     }
 
 }
