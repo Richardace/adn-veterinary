@@ -1,6 +1,5 @@
 update cita
-set idUsuario = :idUsuario,
-	fecha = :fecha,
+set fecha = :fecha,
 	hora = :hora,
 	precio = :precio,
 	notas = :notas

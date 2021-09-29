@@ -22,11 +22,20 @@ public class DaoCitaMysql implements DaoCita {
     @SqlStatement(namespace="cita", value="listar")
     private static String sqlListar;
 
+    @SqlStatement(namespace="cita", value="listarById")
+    private static String sqlListarById;
+
     @SqlStatement(namespace="cita", value="existePorFechaCita")
     private static String sqlFechaCita;
 
+    @SqlStatement(namespace="cita", value="existePorFechaCitaDiferente")
+    private static String sqlFechaCitaUpdate;
+
     @SqlStatement(namespace="cita", value="cantidadCitasUsuario")
     private static String sqlCitasUsuario;
+
+    @SqlStatement(namespace="cita", value="cantidadCitasUsuarioUpdate")
+    private static String sqlCitasUsuarioUpdate;
 
     public DaoCitaMysql(CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate) {
         this.customNamedParameterJdbcTemplate = customNamedParameterJdbcTemplate;
@@ -38,11 +47,27 @@ public class DaoCitaMysql implements DaoCita {
     }
 
     @Override
+    public List<DtoCita> listarById(long id) {
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("id", id);
+        return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().query(sqlListarById, paramSource ,new MapeoCita());
+    }
+
+    @Override
     public Boolean findCitaByFechaAndHora(LocalDate fecha, int hora) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("fecha", fecha);
         paramSource.addValue("hora", hora);
         return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlFechaCita,paramSource, Boolean.class);
+    }
+
+    @Override
+    public boolean findCitaByFechaAndHoraUpdate(LocalDate fecha, int hora, long id) {
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("fecha", fecha);
+        paramSource.addValue("hora", hora);
+        paramSource.addValue("id", id);
+        return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlFechaCitaUpdate,paramSource, Boolean.class);
     }
 
     @Override
@@ -56,8 +81,20 @@ public class DaoCitaMysql implements DaoCita {
         }catch (EmptyResultDataAccessException e){
             throw new ExcepcionTecnica(CONSULTA_FALLIDA);
         }
+    }
 
-
+    @Override
+    public Boolean findCitasByFechaAndUsuarioUpdate(LocalDate fecha, Long idUsuario, Long id) {
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("fecha", fecha);
+        paramSource.addValue("idUsuario", idUsuario);
+        paramSource.addValue("id", id);
+        try{
+            Integer cantidadCitas = this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlCitasUsuarioUpdate,paramSource, Integer.class);
+            return cantidadCitas > 2;
+        }catch (EmptyResultDataAccessException e){
+            throw new ExcepcionTecnica(CONSULTA_FALLIDA);
+        }
     }
 
 }

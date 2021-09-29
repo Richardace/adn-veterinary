@@ -16,4 +16,12 @@ public interface DaoCita {
     Boolean findCitaByFechaAndHora(LocalDate fecha, int hora);
 
     boolean findCitasByFechaAndUsuario(LocalDate fecha, Long idUsuario);
+
+    boolean findCitaByFechaAndHoraUpdate(LocalDate fecha, int hora, long id);
+
+    Boolean findCitasByFechaAndUsuarioUpdate(LocalDate fechaCita, Long idUsuario, Long id);
+
+
+    List<DtoCita> listarById(long id);
+
 }
