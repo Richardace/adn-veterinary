@@ -31,5 +31,16 @@ public class ServicioCrearUsuarioTest {
         BasePrueba.assertThrows(() -> servicioCrearUsuario.ejecutar(usuario), ExcepcionDuplicidad.class,"El usuario ya existe en el sistema");
     }
 
+    @Test
+    public void validarUsuarioNoExisteTest() {
+        // arrange
+        Usuario usuario = new UsuarioTestDataBuilder().build();
+        RepositorioUsuario repositorioUsuario = Mockito.mock(RepositorioUsuario.class);
+        Mockito.when(repositorioUsuario.existe(usuario.getCorreo())).thenReturn(false);
+        ServicioCrearUsuario servicioCrearUsuario = new ServicioCrearUsuario(repositorioUsuario);
+        // act - assert
+        servicioCrearUsuario.ejecutar(usuario);
+    }
+
 
 }

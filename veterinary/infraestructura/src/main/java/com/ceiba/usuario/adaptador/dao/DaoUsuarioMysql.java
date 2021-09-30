@@ -8,7 +8,6 @@ import com.ceiba.infraestructura.jdbc.sqlstatement.SqlStatement;
 import com.ceiba.usuario.modelo.entidad.Usuario;
 import com.ceiba.usuario.puerto.dao.DaoUsuario;
 
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +43,7 @@ public class DaoUsuarioMysql implements DaoUsuario {
         try {
             return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlAutenticar, paramSource, new MapeoUsuario());
         } catch (Exception e) {
-            throw new ExcepcionTecnica(AUTENTICACION_FALLIDA);
+            throw new RuntimeException(AUTENTICACION_FALLIDA ,e);
         }
     }
 

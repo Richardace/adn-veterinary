@@ -1,14 +1,11 @@
 package com.ceiba.cita.modelo.util;
 
-import com.ceiba.cita.modelo.entidad.Cita;
 import com.ceiba.dominio.excepcion.ExcepcionFechaNoValida;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
-public class CitaUtil {
-
-    private CitaUtil(){};
+public final class CitaUtil {
 
     private static final double VALOR_CITA_ENTRE_SEMANA = 150000;
     private static final double VALOR_CITA_FIN_DE_SEMANA = 230000;

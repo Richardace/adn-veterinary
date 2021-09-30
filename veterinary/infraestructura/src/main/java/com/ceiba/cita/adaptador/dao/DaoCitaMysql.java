@@ -17,6 +17,7 @@ import java.util.List;
 public class DaoCitaMysql implements DaoCita {
 
     private static final String CONSULTA_FALLIDA = "Se ha presentado una falla, vuelve a intentarlo";
+    private static final String FECHA = "fecha";
 
     private final CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate;
 
@@ -57,7 +58,7 @@ public class DaoCitaMysql implements DaoCita {
     @Override
     public Boolean buscarCitaPorFechaYHora(Cita cita) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
-        paramSource.addValue("fecha", cita.getFecha());
+        paramSource.addValue(FECHA, cita.getFecha());
         paramSource.addValue("hora", cita.getHora());
         return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlFechaCita,paramSource, Boolean.class);
     }
@@ -65,7 +66,7 @@ public class DaoCitaMysql implements DaoCita {
     @Override
     public boolean buscarCitaPorFechaYHoraDescartandoId(Cita cita) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
-        paramSource.addValue("fecha", cita.getFecha());
+        paramSource.addValue(FECHA, cita.getFecha());
         paramSource.addValue("hora", cita.getHora());
         paramSource.addValue("id", cita.getId());
         return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlFechaCitaUpdate,paramSource, Boolean.class);
@@ -74,27 +75,27 @@ public class DaoCitaMysql implements DaoCita {
     @Override
     public boolean buscarCitaPorFechaYUsuario(Cita cita) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
-        paramSource.addValue("fecha", cita.getFecha());
+        paramSource.addValue(FECHA, cita.getFecha());
         paramSource.addValue("idUsuario", cita.getIdUsuario());
         try{
             Integer cantidadCitas = this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlCitasUsuario,paramSource, Integer.class);
             return cantidadCitas > 2;
         }catch (Exception e){
-            throw new ExcepcionTecnica(CONSULTA_FALLIDA);
+            throw new RuntimeException(CONSULTA_FALLIDA ,e);
         }
     }
 
     @Override
     public Boolean buscarCitaPorFechaYUsuarioDescartandoId(Cita cita) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
-        paramSource.addValue("fecha", cita.getFecha());
+        paramSource.addValue(FECHA, cita.getFecha());
         paramSource.addValue("idUsuario", cita.getIdUsuario());
         paramSource.addValue("id", cita.getId());
         try{
             Integer cantidadCitas = this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlCitasUsuarioUpdate,paramSource, Integer.class);
             return cantidadCitas > 2;
         }catch (Exception e){
-            throw new ExcepcionTecnica(CONSULTA_FALLIDA);
+            throw new RuntimeException(CONSULTA_FALLIDA ,e);
         }
     }
 

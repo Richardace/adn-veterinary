@@ -3,7 +3,6 @@ package com.ceiba.cita.puerto.dao;
 import com.ceiba.cita.modelo.dto.DtoCita;
 import com.ceiba.cita.modelo.entidad.Cita;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface DaoCita {
