@@ -115,6 +115,19 @@ public class ServicioCrearCitaTest {
     }
 
     @Test
+    public void validarHoraCitaNoValidaFinSemana2Test() {
+        // arrange
+        LocalDateTime fechaCitaPrueba = LocalDateTime.of(2021, Month.SEPTEMBER, 25, 00, 00, 00);
+        Integer hora = 0500;
+        RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
+        DaoCita daoCita = Mockito.mock(DaoCita.class);
+
+        ServicioCrearCita servicioCrearCita = new ServicioCrearCita(repositorioCita, daoCita);
+        // act - assert
+        BasePrueba.assertThrows(() -> CitaUtil.validarHoraCitaValida(fechaCitaPrueba.toLocalDate(), hora), ExcepcionFechaNoValida.class, "EL HORARIO LOS FINES DE SEMANA ES 8 AM - 6 PM");
+    }
+
+    @Test
     public void validarHoraCitaValidaEntreSemanaTest() {
         // arrange
         LocalDateTime fechaCitaPrueba = LocalDateTime.of(2021, Month.SEPTEMBER, 24, 00, 00, 00);
@@ -129,10 +142,31 @@ public class ServicioCrearCitaTest {
     }
 
     @Test
-    public void validarHoraCitaNoValidaEntreTest() {
+    public void validarCitaUtil() {
+        // arrange
+        CitaUtil absCls = Mockito.mock(
+                CitaUtil.class,
+                Mockito.CALLS_REAL_METHODS);
+    }
+
+    @Test
+    public void validarHoraCitaNoValidaEntreSemanaTest() {
         // arrange
         LocalDateTime fechaCitaPrueba = LocalDateTime.of(2021, Month.SEPTEMBER, 24, 00, 00, 00);
         Integer hora = 1200;
+        RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
+        DaoCita daoCita = Mockito.mock(DaoCita.class);
+
+        ServicioCrearCita servicioCrearCita = new ServicioCrearCita(repositorioCita, daoCita);
+        // act - assert
+        BasePrueba.assertThrows(() -> CitaUtil.validarHoraCitaValida(fechaCitaPrueba.toLocalDate(), hora), ExcepcionFechaNoValida.class, "EL HORARIO ENTRE SEMANA ES 6 PM - 10 PM");
+    }
+
+    @Test
+    public void validarHoraCitaNoValidaEntreSemana2Test() {
+        // arrange
+        LocalDateTime fechaCitaPrueba = LocalDateTime.of(2021, Month.SEPTEMBER, 24, 00, 00, 00);
+        Integer hora = 2300;
         RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
         DaoCita daoCita = Mockito.mock(DaoCita.class);
 

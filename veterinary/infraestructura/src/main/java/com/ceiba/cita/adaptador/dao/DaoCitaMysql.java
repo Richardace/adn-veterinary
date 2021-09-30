@@ -16,7 +16,6 @@ import java.util.List;
 @Component
 public class DaoCitaMysql implements DaoCita {
 
-    private static final String CONSULTA_FALLIDA = "Se ha presentado una falla, vuelve a intentarlo";
     private static final String FECHA = "fecha";
 
     private final CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate;
