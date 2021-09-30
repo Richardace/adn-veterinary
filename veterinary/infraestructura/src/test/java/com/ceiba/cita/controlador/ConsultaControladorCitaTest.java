@@ -42,4 +42,17 @@ public class ConsultaControladorCitaTest {
                 .andExpect(jsonPath("$[0].notas", IsNull.notNullValue()));
     }
 
+    @Test
+    public void listarCitasByIdTest() throws Exception {
+
+        mocMvc.perform(get("/citas/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].idUsuario", IsNull.notNullValue()))
+                .andExpect(jsonPath("$[0].fecha", IsNull.notNullValue()))
+                .andExpect(jsonPath("$[0].hora", IsNull.notNullValue()))
+                .andExpect(jsonPath("$[0].precio", IsNull.notNullValue()))
+                .andExpect(jsonPath("$[0].notas", IsNull.notNullValue()));
+    }
+
 }

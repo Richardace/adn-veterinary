@@ -1,6 +1,7 @@
 package com.ceiba.usuario.adaptador.dao;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.ceiba.infraestructura.excepcion.ExcepcionTecnica;
 import com.ceiba.infraestructura.jdbc.CustomNamedParameterJdbcTemplate;
@@ -8,6 +9,7 @@ import com.ceiba.infraestructura.jdbc.sqlstatement.SqlStatement;
 import com.ceiba.usuario.modelo.entidad.Usuario;
 import com.ceiba.usuario.puerto.dao.DaoUsuario;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,9 @@ import com.ceiba.usuario.modelo.dto.DtoUsuario;
 
 @Component
 public class DaoUsuarioMysql implements DaoUsuario {
+
+    protected Logger logger = Logger.getLogger("DaoUsuarioMysql");
+
 
     private static final String AUTENTICACION_FALLIDA = "No se encontró usuario con las credenciales proporcionadas";
 
@@ -42,8 +47,10 @@ public class DaoUsuarioMysql implements DaoUsuario {
         paramSource.addValue("clave", usuario.getClave());
         try {
             return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlAutenticar, paramSource, new MapeoUsuario());
-        } catch (Exception e) {
-            throw new RuntimeException(AUTENTICACION_FALLIDA ,e);
+        } catch (EmptyResultDataAccessException e) {
+            logger.info(e.getMessage());
+            throw new ExcepcionTecnica(AUTENTICACION_FALLIDA);
+
         }
     }
 
