@@ -39,10 +39,16 @@ public class DaoUsuarioMysql implements DaoUsuario {
 
     @Override
     public DtoUsuario autenticarUsuario(Usuario usuario) {
+        DtoUsuario dto;
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("correo", usuario.getCorreo());
         paramSource.addValue("clave", usuario.getClave());
-        return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlAutenticar, paramSource, new MapeoUsuario());
+        try{
+            dto = this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlAutenticar, paramSource, new MapeoUsuario());
+        }catch (EmptyResultDataAccessException e){
+            throw new ExcepcionTecnica(AUTENTICACION_FALLIDA, e);
+        }
+        return dto;
 
     }
 
