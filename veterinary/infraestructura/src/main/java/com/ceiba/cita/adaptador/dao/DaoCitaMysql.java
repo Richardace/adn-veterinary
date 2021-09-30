@@ -77,12 +77,7 @@ public class DaoCitaMysql implements DaoCita {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue(FECHA, cita.getFecha());
         paramSource.addValue("idUsuario", cita.getIdUsuario());
-        try{
-            Integer cantidadCitas = this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlCitasUsuario,paramSource, Integer.class);
-            return cantidadCitas > 2;
-        }catch (Exception e){
-            throw new RuntimeException(CONSULTA_FALLIDA ,e);
-        }
+        return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlCitasUsuario,paramSource, Boolean.class);
     }
 
     @Override
@@ -91,12 +86,7 @@ public class DaoCitaMysql implements DaoCita {
         paramSource.addValue(FECHA, cita.getFecha());
         paramSource.addValue("idUsuario", cita.getIdUsuario());
         paramSource.addValue("id", cita.getId());
-        try{
-            Integer cantidadCitas = this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlCitasUsuarioUpdate,paramSource, Integer.class);
-            return cantidadCitas > 2;
-        }catch (Exception e){
-            throw new RuntimeException(CONSULTA_FALLIDA ,e);
-        }
+        return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlCitasUsuarioUpdate,paramSource, Boolean.class);
     }
 
 }

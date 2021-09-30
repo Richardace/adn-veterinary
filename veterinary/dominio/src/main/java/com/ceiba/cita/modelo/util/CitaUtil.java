@@ -5,7 +5,7 @@ import com.ceiba.dominio.excepcion.ExcepcionFechaNoValida;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
-public final class CitaUtil {
+public abstract class CitaUtil {
 
     private static final double VALOR_CITA_ENTRE_SEMANA = 150000;
     private static final double VALOR_CITA_FIN_DE_SEMANA = 230000;

@@ -1,1 +1,1 @@
-select count(*) from cita where fecha = :fecha and idUsuario = :idUsuario and id = :id
+select CAST(COUNT(*)  >= 3 AS BIT) FROM cita WHERE fecha = :fecha and idUsuario  = :idUsuario and id = :id
