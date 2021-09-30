@@ -27,20 +27,20 @@ public class ServicioActualizarCita {
     public void ejecutar(Cita cita) {
         LocalDate fechaCita = cita.getFecha().toLocalDate();
         CitaUtil.validarHoraCitaValida(fechaCita, cita.getHora());
-        validarDisponibilidadCita(fechaCita, cita.getHora(), cita.getId());
-        validarLimiteCitas(fechaCita, cita.getIdUsuario(), cita.getId());
+        validarDisponibilidadCita(cita);
+        validarLimiteCitas(cita);
         cita.setPrecio(CitaUtil.calcularCostoCita(fechaCita));
         this.repositorioCita.actualizar(cita);
     }
 
-    private void validarLimiteCitas(LocalDate fechaCita, Long idUsuario, Long id){
-        if(this.daoCita.findCitasByFechaAndUsuarioUpdate(fechaCita, idUsuario, id)){
+    private void validarLimiteCitas(Cita cita){
+        if(this.daoCita.buscarCitaPorFechaYUsuarioDescartandoId(cita)){
             throw new ExcepcionLimiteCitasDia(LIMITE_CITAS_DIA);
         }
     }
 
-    private void validarDisponibilidadCita(LocalDate fechaCita, int horaCita, Long id){
-        if(this.daoCita.findCitaByFechaAndHoraUpdate(fechaCita, horaCita, id)){
+    private void validarDisponibilidadCita(Cita cita){
+        if(this.daoCita.buscarCitaPorFechaYHoraDescartandoId(cita)){
             throw new ExcepcionFechaOcupada(FECHA_OCUPADA);
         }
     }

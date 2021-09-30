@@ -42,7 +42,6 @@ public class ServicioCrearCitaTest {
         RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
         DaoCita daoCita = Mockito.mock(DaoCita.class);
 
-        ServicioCrearCita servicioCrearCita = new ServicioCrearCita(repositorioCita, daoCita);
         // act - assert
         Double precioCita = CitaUtil.calcularCostoCita(fechaCitaPrueba.toLocalDate());
 
@@ -50,7 +49,7 @@ public class ServicioCrearCitaTest {
     }
 
     @Test
-    public void validarFechaFinDeSemanaTest() {
+    public void validarFechaFinDeSemanaSabadoTest() {
         // arrange
         LocalDateTime fechaCitaPrueba = LocalDateTime.of(2021, Month.SEPTEMBER, 25, 00, 00, 00);
         RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
@@ -64,6 +63,19 @@ public class ServicioCrearCitaTest {
     }
 
     @Test
+    public void validarFechaFinDeSemanaDomingoTest() {
+        // arrange
+        LocalDateTime fechaCitaPrueba = LocalDateTime.of(2021, Month.SEPTEMBER, 26, 00, 00, 00);
+        RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
+        DaoCita daoCita = Mockito.mock(DaoCita.class);
+
+        ServicioCrearCita servicioCrearCita = new ServicioCrearCita(repositorioCita, daoCita);
+        // act - assert
+        boolean esFinDeSemana = CitaUtil.esFinDeSemana(fechaCitaPrueba.toLocalDate());
+        Assert.assertEquals(true, esFinDeSemana);
+    }
+
+    @Test
     public void validarFechaEntreSemanaTest() {
         // arrange
         LocalDateTime fechaCitaPrueba = LocalDateTime.of(2021, Month.SEPTEMBER, 24, 00, 00, 00);
@@ -73,21 +85,74 @@ public class ServicioCrearCitaTest {
         ServicioCrearCita servicioCrearCita = new ServicioCrearCita(repositorioCita, daoCita);
         // act - assert
         boolean esFinDeSemana = CitaUtil.esFinDeSemana(fechaCitaPrueba.toLocalDate());
-
         Assert.assertEquals(false, esFinDeSemana);
+    }
+
+    @Test
+    public void validarHoraCitaValidaFinSemanaTest() {
+        // arrange
+        LocalDateTime fechaCitaPrueba = LocalDateTime.of(2021, Month.SEPTEMBER, 25, 00, 00, 00);
+        Integer hora = 1200;
+        RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
+        DaoCita daoCita = Mockito.mock(DaoCita.class);
+
+        ServicioCrearCita servicioCrearCita = new ServicioCrearCita(repositorioCita, daoCita);
+        // act - assert
+        CitaUtil.validarHoraCitaValida(fechaCitaPrueba.toLocalDate(), hora);
+    }
+
+    @Test
+    public void validarHoraCitaNoValidaFinSemanaTest() {
+        // arrange
+        LocalDateTime fechaCitaPrueba = LocalDateTime.of(2021, Month.SEPTEMBER, 25, 00, 00, 00);
+        Integer hora = 2000;
+        RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
+        DaoCita daoCita = Mockito.mock(DaoCita.class);
+
+        ServicioCrearCita servicioCrearCita = new ServicioCrearCita(repositorioCita, daoCita);
+        // act - assert
+        BasePrueba.assertThrows(() -> CitaUtil.validarHoraCitaValida(fechaCitaPrueba.toLocalDate(), hora), ExcepcionFechaNoValida.class, "EL HORARIO LOS FINES DE SEMANA ES 8 AM - 6 PM");
+    }
+
+    @Test
+    public void validarHoraCitaValidaEntreSemanaTest() {
+        // arrange
+        LocalDateTime fechaCitaPrueba = LocalDateTime.of(2021, Month.SEPTEMBER, 24, 00, 00, 00);
+        Integer hora = 2000;
+        RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
+        DaoCita daoCita = Mockito.mock(DaoCita.class);
+
+        ServicioCrearCita servicioCrearCita = new ServicioCrearCita(repositorioCita, daoCita);
+
+        // act - assert
+        CitaUtil.validarHoraCitaValida(fechaCitaPrueba.toLocalDate(), hora);
+    }
+
+    @Test
+    public void validarHoraCitaNoValidaEntreTest() {
+        // arrange
+        LocalDateTime fechaCitaPrueba = LocalDateTime.of(2021, Month.SEPTEMBER, 24, 00, 00, 00);
+        Integer hora = 1200;
+        RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
+        DaoCita daoCita = Mockito.mock(DaoCita.class);
+
+        ServicioCrearCita servicioCrearCita = new ServicioCrearCita(repositorioCita, daoCita);
+        // act - assert
+        BasePrueba.assertThrows(() -> CitaUtil.validarHoraCitaValida(fechaCitaPrueba.toLocalDate(), hora), ExcepcionFechaNoValida.class, "EL HORARIO ENTRE SEMANA ES 6 PM - 10 PM");
     }
 
     @Test
     public void validarErrorPorLimiteDeCitasUsuarioTest() {
         // arrange
-        Cita cita = new CitaTestDataBuilder().build();
-        cita.setHora(1300);
-        cita.setFecha(LocalDateTime.of(2021, Month.SEPTEMBER, 25, 00, 00, 00));
+        Integer hora = 1300;
+        LocalDateTime fecha = LocalDateTime.of(2021, Month.SEPTEMBER, 25, 00, 00, 00);
+        Cita cita = new CitaTestDataBuilder().conFecha(fecha).conHora(hora).build();
+
         RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
         DaoCita daoCita = Mockito.mock(DaoCita.class);
 
-        Mockito.when(daoCita.findCitaByFechaAndHora(cita.getFecha().toLocalDate(), cita.getHora())).thenReturn(false);
-        Mockito.when(daoCita.findCitasByFechaAndUsuario(cita.getFecha().toLocalDate(), 1L)).thenReturn(true);
+        Mockito.when(daoCita.buscarCitaPorFechaYHora(cita)).thenReturn(false);
+        Mockito.when(daoCita.buscarCitaPorFechaYUsuario(cita)).thenReturn(true);
         ServicioCrearCita servicioCrearCita = new ServicioCrearCita(repositorioCita, daoCita);
         // act - assert
         BasePrueba.assertThrows(() -> servicioCrearCita.ejecutar(cita), ExcepcionLimiteCitasDia.class, "SE EXCEDIO EL LIMITE DE CITAS AL DIA");
@@ -96,14 +161,15 @@ public class ServicioCrearCitaTest {
     @Test
     public void validarErrorPorDisponibilidadCitasTest() {
         // arrange
-        Cita cita = new CitaTestDataBuilder().build();
-        cita.setHora(1300);
-        cita.setFecha(LocalDateTime.of(2021, Month.SEPTEMBER, 25, 00, 00, 00));
+        Integer hora = 1300;
+        LocalDateTime fecha = LocalDateTime.of(2021, Month.SEPTEMBER, 25, 00, 00, 00);
+        Cita cita = new CitaTestDataBuilder().conFecha(fecha).conHora(hora).build();
+
         RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
         DaoCita daoCita = Mockito.mock(DaoCita.class);
 
-        Mockito.when(daoCita.findCitaByFechaAndHora(cita.getFecha().toLocalDate(), cita.getHora())).thenReturn(true);
-        Mockito.when(daoCita.findCitasByFechaAndUsuario(cita.getFecha().toLocalDate(), 1L)).thenReturn(false);
+        Mockito.when(daoCita.buscarCitaPorFechaYHora(cita)).thenReturn(true);
+        Mockito.when(daoCita.buscarCitaPorFechaYUsuario(cita)).thenReturn(false);
         ServicioCrearCita servicioCrearCita = new ServicioCrearCita(repositorioCita, daoCita);
         // act - assert
         BasePrueba.assertThrows(() -> servicioCrearCita.ejecutar(cita), ExcepcionFechaOcupada.class, "A ESTA HORA EL DOCTOR TIENE OTRA CITA");
@@ -112,14 +178,15 @@ public class ServicioCrearCitaTest {
     @Test
     public void validarErrorPorHoraCitaFinDeSemanaTest() {
         // arrange
-        Cita cita = new CitaTestDataBuilder().build();
-        cita.setHora(1900);
-        cita.setFecha(LocalDateTime.of(2021, Month.SEPTEMBER, 25, 00, 00, 00));
+        Integer hora = 1900;
+        LocalDateTime fecha = LocalDateTime.of(2021, Month.SEPTEMBER, 25, 00, 00, 00);
+        Cita cita = new CitaTestDataBuilder().conFecha(fecha).conHora(hora).build();
+
         RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
         DaoCita daoCita = Mockito.mock(DaoCita.class);
 
-        Mockito.when(daoCita.findCitaByFechaAndHora(cita.getFecha().toLocalDate(), cita.getHora())).thenReturn(false);
-        Mockito.when(daoCita.findCitasByFechaAndUsuario(cita.getFecha().toLocalDate(), 1L)).thenReturn(false);
+        Mockito.when(daoCita.buscarCitaPorFechaYHora(cita)).thenReturn(false);
+        Mockito.when(daoCita.buscarCitaPorFechaYUsuario(cita)).thenReturn(false);
         ServicioCrearCita servicioCrearCita = new ServicioCrearCita(repositorioCita, daoCita);
         // act - assert
         BasePrueba.assertThrows(() -> servicioCrearCita.ejecutar(cita), ExcepcionFechaNoValida.class, "EL HORARIO LOS FINES DE SEMANA ES 8 AM - 6 PM");
@@ -128,14 +195,15 @@ public class ServicioCrearCitaTest {
     @Test
     public void validarErrorPorHoraCitaEntreSemanaTest() {
         // arrange
-        Cita cita = new CitaTestDataBuilder().build();
-        cita.setHora(1300);
-        cita.setFecha(LocalDateTime.of(2021, Month.SEPTEMBER, 23, 00, 00, 00));
+        Integer hora = 1300;
+        LocalDateTime fecha = LocalDateTime.of(2021, Month.SEPTEMBER, 23, 00, 00, 00);
+        Cita cita = new CitaTestDataBuilder().conFecha(fecha).conHora(hora).build();
+
         RepositorioCita repositorioCita = Mockito.mock(RepositorioCita.class);
         DaoCita daoCita = Mockito.mock(DaoCita.class);
 
-        Mockito.when(daoCita.findCitaByFechaAndHora(cita.getFecha().toLocalDate(), cita.getHora())).thenReturn(false);
-        Mockito.when(daoCita.findCitasByFechaAndUsuario(cita.getFecha().toLocalDate(), 1L)).thenReturn(false);
+        Mockito.when(daoCita.buscarCitaPorFechaYHora(cita)).thenReturn(false);
+        Mockito.when(daoCita.buscarCitaPorFechaYUsuario(cita)).thenReturn(false);
         ServicioCrearCita servicioCrearCita = new ServicioCrearCita(repositorioCita, daoCita);
         // act - assert
         BasePrueba.assertThrows(() -> servicioCrearCita.ejecutar(cita), ExcepcionFechaNoValida.class, "EL HORARIO ENTRE SEMANA ES 6 PM - 10 PM");

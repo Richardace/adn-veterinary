@@ -1,6 +1,7 @@
 package com.ceiba.cita.puerto.dao;
 
 import com.ceiba.cita.modelo.dto.DtoCita;
+import com.ceiba.cita.modelo.entidad.Cita;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,15 +14,12 @@ public interface DaoCita {
      */
     List<DtoCita> listar();
 
-    Boolean findCitaByFechaAndHora(LocalDate fecha, int hora);
+    Boolean buscarCitaPorFechaYHora(Cita cita);
+    boolean buscarCitaPorFechaYHoraDescartandoId(Cita cita);
 
-    boolean findCitasByFechaAndUsuario(LocalDate fecha, Long idUsuario);
+    boolean buscarCitaPorFechaYUsuario(Cita cita);
+    Boolean buscarCitaPorFechaYUsuarioDescartandoId(Cita cita);
 
-    boolean findCitaByFechaAndHoraUpdate(LocalDate fecha, int hora, long id);
-
-    Boolean findCitasByFechaAndUsuarioUpdate(LocalDate fechaCita, Long idUsuario, Long id);
-
-
-    List<DtoCita> listarById(long id);
+    List<DtoCita> listarPorId(long id);
 
 }

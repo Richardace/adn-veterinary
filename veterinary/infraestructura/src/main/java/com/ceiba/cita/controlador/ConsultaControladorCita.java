@@ -1,9 +1,8 @@
 package com.ceiba.cita.controlador;
 
 import com.ceiba.cita.consulta.ManejadorListarCita;
-import com.ceiba.cita.consulta.ManejadorListarCitaById;
+import com.ceiba.cita.consulta.ManejadorListarCitaPorId;
 import com.ceiba.cita.modelo.dto.DtoCita;
-import com.ceiba.usuario.comando.ComandoUsuario;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +16,12 @@ import java.util.List;
 public class ConsultaControladorCita {
 
     private final ManejadorListarCita manejadorListarCitas;
-    private final ManejadorListarCitaById manejadorListarCitaById;
+    private final ManejadorListarCitaPorId manejadorListarCitaPorId;
 
     public ConsultaControladorCita(ManejadorListarCita manejadorListarCitas,
-                                   ManejadorListarCitaById manejadorListarCitaById) {
+                                   ManejadorListarCitaPorId manejadorListarCitaPorId) {
         this.manejadorListarCitas = manejadorListarCitas;
-        this.manejadorListarCitaById = manejadorListarCitaById;
+        this.manejadorListarCitaPorId = manejadorListarCitaPorId;
     }
 
     @GetMapping
@@ -34,7 +33,7 @@ public class ConsultaControladorCita {
     @GetMapping(value="/{id}")
     @ApiOperation("Listar Citas by Id")
     public List<DtoCita> listarById(@PathVariable long id) {
-        return this.manejadorListarCitaById.ejecutar(id);
+        return this.manejadorListarCitaPorId.ejecutar(id);
     }
 
 }

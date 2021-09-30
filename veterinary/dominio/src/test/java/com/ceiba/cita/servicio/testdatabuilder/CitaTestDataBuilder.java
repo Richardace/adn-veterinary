@@ -24,6 +24,11 @@ public class CitaTestDataBuilder {
         this.notas = "Paciente en Perfecto Estado";
     }
 
+    public CitaTestDataBuilder sinId() {
+        this.id = null;
+        return this;
+    }
+
     public CitaTestDataBuilder sinIdUsuario() {
         this.idUsuario = null;
         return this;
@@ -44,8 +49,20 @@ public class CitaTestDataBuilder {
         return this;
     }
 
+    public CitaTestDataBuilder conFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+        return this;
+    }
+
+    public CitaTestDataBuilder conHora(Integer hora) {
+        this.hora = hora;
+        return this;
+    }
+
+
     public Cita build() {
         return new Cita(
+                id,
                 idUsuario,
                 fecha,
                 hora,

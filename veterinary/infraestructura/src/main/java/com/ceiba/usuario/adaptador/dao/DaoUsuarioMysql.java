@@ -17,7 +17,7 @@ import com.ceiba.usuario.modelo.dto.DtoUsuario;
 @Component
 public class DaoUsuarioMysql implements DaoUsuario {
 
-    private final static String AUTENTICACION_FALLIDA = "No se encontró usuario con las credenciales proporcionadas";
+    private static final String AUTENTICACION_FALLIDA = "No se encontró usuario con las credenciales proporcionadas";
 
     private final CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate;
 
@@ -43,7 +43,7 @@ public class DaoUsuarioMysql implements DaoUsuario {
         paramSource.addValue("clave", usuario.getClave());
         try {
             return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlAutenticar, paramSource, new MapeoUsuario());
-        } catch (EmptyResultDataAccessException e) {
+        } catch (Exception e) {
             throw new ExcepcionTecnica(AUTENTICACION_FALLIDA);
         }
     }

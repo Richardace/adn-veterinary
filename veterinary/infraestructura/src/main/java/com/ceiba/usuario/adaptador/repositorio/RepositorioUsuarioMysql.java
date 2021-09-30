@@ -47,10 +47,10 @@ public class RepositorioUsuarioMysql implements RepositorioUsuario {
     }
 
     @Override
-    public boolean existeExcluyendoId(Long id, String correo) {
+    public boolean existeExcluyendoId(Usuario usuario) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
-        paramSource.addValue("id", id);
-        paramSource.addValue("correo", correo);
+        paramSource.addValue("id", usuario.getId());
+        paramSource.addValue("correo", usuario.getCorreo());
 
         return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlExisteExcluyendoId,paramSource, Boolean.class);
     }

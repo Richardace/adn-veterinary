@@ -28,6 +28,6 @@ public interface RepositorioUsuario {
      * @param correo
      * @return si existe o no
      */
-    boolean existeExcluyendoId(Long id,String correo);
+    boolean existeExcluyendoId(Usuario usuario);
 
 }

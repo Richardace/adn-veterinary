@@ -1,6 +1,7 @@
 package com.ceiba.cita.adaptador.dao;
 
 import com.ceiba.cita.modelo.dto.DtoCita;
+import com.ceiba.cita.modelo.entidad.Cita;
 import com.ceiba.cita.puerto.dao.DaoCita;
 import com.ceiba.infraestructura.excepcion.ExcepcionTecnica;
 import com.ceiba.infraestructura.jdbc.CustomNamedParameterJdbcTemplate;
@@ -15,7 +16,7 @@ import java.util.List;
 @Component
 public class DaoCitaMysql implements DaoCita {
 
-    private final static String CONSULTA_FALLIDA = "No se encontró usuario con las credenciales proporcionadas";
+    private static final String CONSULTA_FALLIDA = "Se ha presentado una falla, vuelve a intentarlo";
 
     private final CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate;
 
@@ -47,52 +48,52 @@ public class DaoCitaMysql implements DaoCita {
     }
 
     @Override
-    public List<DtoCita> listarById(long id) {
+    public List<DtoCita> listarPorId(long id) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("id", id);
         return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().query(sqlListarById, paramSource ,new MapeoCita());
     }
 
     @Override
-    public Boolean findCitaByFechaAndHora(LocalDate fecha, int hora) {
+    public Boolean buscarCitaPorFechaYHora(Cita cita) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
-        paramSource.addValue("fecha", fecha);
-        paramSource.addValue("hora", hora);
+        paramSource.addValue("fecha", cita.getFecha());
+        paramSource.addValue("hora", cita.getHora());
         return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlFechaCita,paramSource, Boolean.class);
     }
 
     @Override
-    public boolean findCitaByFechaAndHoraUpdate(LocalDate fecha, int hora, long id) {
+    public boolean buscarCitaPorFechaYHoraDescartandoId(Cita cita) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
-        paramSource.addValue("fecha", fecha);
-        paramSource.addValue("hora", hora);
-        paramSource.addValue("id", id);
+        paramSource.addValue("fecha", cita.getFecha());
+        paramSource.addValue("hora", cita.getHora());
+        paramSource.addValue("id", cita.getId());
         return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlFechaCitaUpdate,paramSource, Boolean.class);
     }
 
     @Override
-    public boolean findCitasByFechaAndUsuario(LocalDate fecha, Long idUsuario) {
+    public boolean buscarCitaPorFechaYUsuario(Cita cita) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
-        paramSource.addValue("fecha", fecha);
-        paramSource.addValue("idUsuario", idUsuario);
+        paramSource.addValue("fecha", cita.getFecha());
+        paramSource.addValue("idUsuario", cita.getIdUsuario());
         try{
             Integer cantidadCitas = this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlCitasUsuario,paramSource, Integer.class);
             return cantidadCitas > 2;
-        }catch (EmptyResultDataAccessException e){
+        }catch (Exception e){
             throw new ExcepcionTecnica(CONSULTA_FALLIDA);
         }
     }
 
     @Override
-    public Boolean findCitasByFechaAndUsuarioUpdate(LocalDate fecha, Long idUsuario, Long id) {
+    public Boolean buscarCitaPorFechaYUsuarioDescartandoId(Cita cita) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
-        paramSource.addValue("fecha", fecha);
-        paramSource.addValue("idUsuario", idUsuario);
-        paramSource.addValue("id", id);
+        paramSource.addValue("fecha", cita.getFecha());
+        paramSource.addValue("idUsuario", cita.getIdUsuario());
+        paramSource.addValue("id", cita.getId());
         try{
             Integer cantidadCitas = this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlCitasUsuarioUpdate,paramSource, Integer.class);
             return cantidadCitas > 2;
-        }catch (EmptyResultDataAccessException e){
+        }catch (Exception e){
             throw new ExcepcionTecnica(CONSULTA_FALLIDA);
         }
     }
